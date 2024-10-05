@@ -1,16 +1,17 @@
 from pathlib import Path
 import os
-from decouple import config
+from dotenv import load_dotenv
+# from decouple import config
+
+load_dotenv()  # Carrega as variáveis do arquivo .env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n(2*s!i2g79*xe0b@^grpk+xnx*emr%$f_ucpta0obtnef_o4b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
