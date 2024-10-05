@@ -22,7 +22,7 @@ def dashboard(request):
 class LoginView(FormView):
     template_name = "login.html"
     form_class = CustomLoginForm  # Use o formulário customizado aqui
-    success_url = '/dashboard/'
+    success_url = '/blog/'
 
     def form_valid(self, form):
         username = form.cleaned_data.get('username')
