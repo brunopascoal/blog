@@ -7,10 +7,7 @@ from decouple import config
 import requests
 from django.core.files.base import ContentFile
 
-
 # Exemplo na sua view onde você passa os posts
-from django.shortcuts import render
-from .models import Post
 import os
 from dotenv import load_dotenv
 import openai
@@ -48,7 +45,6 @@ def post_create(request):
         form = PostForm()
     return render(request, 'post_create.html', {'form': form})
 
-<<<<<<< HEAD
 # Função para gerar uma imagem com base no título e no conteúdo do post
 def gerar_imagem(post_title, post_content):
     prompt = f"{post_title}: {post_content}"
@@ -76,18 +72,6 @@ def blog_posts(request):
         'posts': posts,
     }
     return render(request, 'blog/blog_posts.html', context)
-=======
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from .models import Post
-from .forms import PostForm
-from openai import OpenAI
-
-api = config("API_KEY_OPENAI")
-client = OpenAI(api_key=api)
-
-# Inicializando a API do OpenAI
->>>>>>> main
 
 class PostCreateView(CreateView):
     model = Post
