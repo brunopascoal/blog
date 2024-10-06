@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Blog Posts{% endblock %}
+{% block title %}Blog Bruno{% endblock %}
 
 {% block content %}
-    <h2>Latest Blog Posts</h2>
+    <h2>Ultimas postagens</h2>
     <div class="row">
         {% for post in posts %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
-                    <img src="https://picsum.photos/300/200?random={{ forloop.counter }}" class="card-img-top" alt="{{ post.title }}">
+                    {% if post.image_url %}
+                        <img src="{{ post.image_url }}" class="card-img-top" alt="{{ post.title }}">
+                    {% else %}
+                        {% comment %} <img src="{% static 'placeholder.png' %}" class="card-img-top" alt="No image"> {% endcomment %}
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text">{{ post.content|slice:":100" }}...</p>
-                        <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">Read more</a>
+                        <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">Leia mais</a>
                     </div>
                 </div>
             </div>
