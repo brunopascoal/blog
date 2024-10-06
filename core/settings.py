@@ -16,7 +16,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']  
 
 
 # Application definition
@@ -123,14 +123,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Redirecionar após login
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = '/blog/'
 LOGOUT_REDIRECT_URL = '/'
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 
@@ -149,6 +149,8 @@ STATICFILES_DIRS = [
     BASE_DIR / "core/static",  # O caminho onde está a pasta 'static' do app core
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Este é o diretório onde os arquivos estáticos serão coletados em produção
 STATIC_ROOT = BASE_DIR / "staticfiles"
