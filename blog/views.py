@@ -7,7 +7,6 @@ from decouple import config
 import requests
 from django.core.files.base import ContentFile
 
-
 def post_list(request):
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'post_list.html', {'posts': posts})
