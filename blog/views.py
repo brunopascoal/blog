@@ -7,6 +7,7 @@ from decouple import config
 import requests
 from django.core.files.base import ContentFile
 
+<<<<<<< HEAD
 # Exemplo na sua view onde você passa os posts
 import os
 from dotenv import load_dotenv
@@ -17,6 +18,8 @@ load_dotenv()  # Carrega as variáveis do arquivo .env
 
 openai.api_key = os.getenv('openai.api_key ')
 
+=======
+>>>>>>> main
 def post_list(request):
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'post_list.html', {'posts': posts})
