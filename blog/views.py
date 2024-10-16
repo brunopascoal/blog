@@ -78,4 +78,5 @@ class PostCreateView(CreateView):
         except Exception as e:
             print(f"Erro ao gerar imagem: {e}")
 
+        # Salva o formulário com as alterações feitas na instância
         return super().form_valid(form)

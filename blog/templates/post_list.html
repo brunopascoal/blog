@@ -3,15 +3,15 @@
 {% block title %}Blog Bruno{% endblock %}
 
 {% block content %}
-    <h2>Ultimas postagens</h2>
+    <h2>Últimas postagens</h2>
     <div class="row">
         {% for post in posts %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     {% if post.image_url %}
-                        <img src="{{ post.image_url }}" class="card-img-top" alt="{{ post.title }}">
+                        <img src="{{ post.image_url.url }}" class="card-img-top" alt="{{ post.title }}">
                     {% else %}
-                        {% comment %} <img src="{% static 'placeholder.png' %}" class="card-img-top" alt="No image"> {% endcomment %}
+                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Placeholder Image">
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>

@@ -76,6 +76,17 @@ body {
     transform: translateY(-5px);
 }
 
+.card-img-top {
+    width: 100%;
+    /* Faz a imagem ocupar toda a largura do contêiner */
+    height: auto;
+    /* Mantém a proporção da imagem */
+    object-fit: cover;
+    /* Ajusta como a imagem é redimensionada dentro do contêiner */
+    display: block;
+    /* Garante que a imagem seja exibida como um elemento de bloco */
+}
+
 .dark-mode {
     background-color: #333;
     color: #fff;
@@ -94,6 +105,7 @@ body {
     #sidebar {
         margin-left: -250px;
     }
+
     #sidebar.active {
         margin-left: 0;
     }
