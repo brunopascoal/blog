@@ -1,24 +1,57 @@
+{% extends 'base.html' %}
+
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-    <h2>{{ post.title }}</h2>
-    <p>{{ post.content }}</p>
-    {% if post.image_url %}
-        <img src="{{ post.image_url.url }}" alt="Imagem gerada para o post">
-    {% endif %}
-    <p>Published by {{ post.author }} on {{ post.created_at }}</p>
-    
-    <h3>Comments</h3>
-    <ul>
-        {% for comment in comments %}
-            <li>{{ comment.author }}: {{ comment.content }}</li>
-        {% endfor %}
-    </ul>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Post Section -->
+            <div class="card mb-4 text-white" style="background-size: cover; background-position: center; 
+            {% if post.image_url %}
+            background-image: url('{{ post.image_url.url }}');
+            {% endif %}">
+                <div class="card-body" style="background: rgba(0, 0, 0, 0.5);">
+                    <h2 class="card-title text-center">{{ post.title }}</h2>
+                    <p class="text-center">Publicado por <strong>{{ post.author.first_name }}</strong> em {{ post.created_at|date:"d M, Y" }}</p>
+                </div>
+            </div>
 
-    <h3>Add a comment</h3>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Conteúdo</h3>
+                </div>
+                <p class="card-text">{{ post.content }}</p>
+
+            </div>
+            <!-- Comments Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Comentários</h3>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for comment in comments %}
+                        <li class="list-group-item">
+                            <strong>{{ comment.author.first_name }} - {{ comment.created_at|date:"d M, Y" }}:</strong> {{ comment.content }}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">Nenhum comentário ainda. Seja o primeiro a comentar!</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Add Comment Form -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3>Adicionar um comentário</h3>
+                    <form method="post" action="{% url 'add_comment' post.slug %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

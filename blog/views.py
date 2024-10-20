@@ -6,25 +6,34 @@ from django.views.generic import CreateView
 from decouple import config
 import requests
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
 
 
 def post_list(request):
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'post_list.html', {'posts': posts})
 
-def post_detail(request, slug):
+@login_required
+def add_comment(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    comments = post.comments.all()
+    
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = post
+            comment.author = request.user  # Define o autor como o usuário logado
+            comment.post = post  # Associa o comentário ao post específico
             comment.save()
             return redirect('post_detail', slug=post.slug)
     else:
-        form = CommentForm()
+        return redirect('post_detail', slug=post.slug)
+    
+def post_detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    comments = post.comments.all()
+    form = CommentForm()  # Apenas inicialize o formulário
     return render(request, 'post_detail.html', {'post': post, 'comments': comments, 'form': form})
+
 
 def post_create(request):
     if request.method == 'POST':
