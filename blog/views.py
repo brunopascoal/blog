@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 from django.urls import reverse_lazy
@@ -7,6 +8,11 @@ from decouple import config
 import requests
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from .models import Post
+from .forms import PostForm
+from openai import OpenAI
 
 
 def post_list(request):
@@ -34,7 +40,7 @@ def post_detail(request, slug):
     form = CommentForm()  # Apenas inicialize o formulário
     return render(request, 'post_detail.html', {'post': post, 'comments': comments, 'form': form})
 
-
+@login_required
 def post_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -45,18 +51,13 @@ def post_create(request):
         form = PostForm()
     return render(request, 'post_create.html', {'form': form})
 
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from .models import Post
-from .forms import PostForm
-from openai import OpenAI
+
 
 api = config("API_KEY_OPENAI")
 client = OpenAI(api_key=api)
 
 # Inicializando a API do OpenAI
-
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'post_create.html'

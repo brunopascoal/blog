@@ -17,7 +17,7 @@
         <!-- Sidebar -->
         <nav id="sidebar" class="active">
             <div class="sidebar-header">
-                <h3>Menu</h3>
+                <h3>Olá, {{ user.first_name }}</h3>
             </div>
             <ul class="list-unstyled components">
                 <li class="d-flex align-items-center">
@@ -26,25 +26,46 @@
                         Página Inicial
                     </a>
                 </li>
-                <li class="d-flex align-items-center">
-                    <a href="{% url 'post_create' %}" class="d-flex align-items-center">
-                        <i class="fa-solid fa-newspaper"></i>
-                        Criar Post
-                    </a>
-                </li>
+
+                {% if user.is_authenticated %}
+                    <li class="d-flex align-items-center">
+                        <a href="{% url 'post_create' %}" class="d-flex align-items-center">
+                            <i class="fa-solid fa-newspaper me-2"></i>
+                            Criar Post
+                        </a>
+                    </li>
+                {% endif %}
                 
                 <li class="d-flex align-items-center">
                     <a href="#" class="d-flex align-items-center">
-                        <i class="fa-regular fa-address-card"></i>
+                        <i class="fa-regular fa-address-card me-2"></i>
                         Sobre Nós
                     </a>
                 </li>
-                <li class="d-flex align-items-center">
-                    <a href="#" class="d-flex align-items-center">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        Sair
-                    </a>
-                </li>             
+                {% if user.is_authenticated %}
+    <!-- Formulário de logout, mas invisível -->
+    <form id="logout-form" method="POST" action="{% url 'logout' %}" style="display: none;">
+        {% csrf_token %}
+    </form>
+
+    <!-- Link que simula o logout -->
+    <li class="d-flex align-items-center">
+        <a href="#" onclick="document.getElementById('logout-form').submit();" class="d-flex align-items-center" style="width: 100%; text-decoration: none; color: inherit;">
+            <i class="fa-solid fa-right-from-bracket me-2"></i>
+            Sair
+        </a>
+    </li>
+{% else %}
+    <li class="d-flex align-items-center">
+        <a href="{% url 'login' %}" class="d-flex align-items-center" style="width: 100%; text-decoration: none; color: inherit;">
+            <i class="fa-solid fa-right-to-bracket me-2"></i>
+            Login
+        </a>
+    </li>
+{% endif %}
+
+
+
             </ul>
             <div class="social-icons">
                 <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
