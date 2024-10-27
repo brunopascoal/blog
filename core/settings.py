@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 from decouple import config
-
+import django_on_heroku
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -165,3 +165,5 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SOCIALACCOUNT_LOGIN_ON_GET=True
+
+django_on_heroku.settings(locals())
