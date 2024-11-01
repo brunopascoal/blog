@@ -13,6 +13,7 @@ from django.views.generic import CreateView
 from .models import Post
 from .forms import PostForm
 from openai import OpenAI
+from django.http import HttpResponseRedirect
 
 
 def post_list(request):
@@ -56,7 +57,6 @@ def post_create(request):
 api = config("API_KEY_OPENAI")
 client = OpenAI(api_key=api)
 
-# Inicializando a API do OpenAI
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
@@ -64,29 +64,40 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('post_list')
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
 
-        prompt = f"{form.instance.title} {form.instance.content[:200]}"
-        
-        try:
-            response = client.images.generate(prompt=prompt, n=1, size="512x512")
-            image_url = response.data[0].url
+        # Verifica se o usuário fez upload de uma imagem
+        if 'image_url' not in self.request.FILES:
+            # Nenhuma imagem foi carregada, gerar imagem usando a API
+            prompt = f"{self.object.title} {self.object.content[:200]}"
+            
+            try:
+                response = client.images.generate(prompt=prompt, n=1, size="512x512")
+                image_url = response.data[0].url
 
-            # Baixar a imagem gerada pela API do DALL-E
-            image_response = requests.get(image_url)
+                # Baixar a imagem gerada pela API
+                image_response = requests.get(image_url)
 
-            if image_response.status_code == 200:
-                # Salvar a imagem no diretório de mídia definido
-                form.instance.image_url.save(
-                    f'{form.instance.slug}.png',  # Nome do arquivo de imagem
-                    ContentFile(image_response.content),  # Conteúdo da imagem
-                    save=False
-                )
-            else:
-                print("Erro ao baixar a imagem")
+                if image_response.status_code == 200:
+                    # Salvar a imagem no diretório de mídia definido
+                    self.object.image_url.save(
+                        f'{self.object.slug}.png',
+                        ContentFile(image_response.content),
+                        save=False
+                    )
+                else:
+                    print("Erro ao baixar a imagem")
 
-        except Exception as e:
-            print(f"Erro ao gerar imagem: {e}")
+            except Exception as e:
+                print(f"Erro ao gerar imagem: {e}")
+        else:
+            # Imagem foi carregada pelo usuário, não é necessário gerar
+            pass
 
-        # Salva o formulário com as alterações feitas na instância
-        return super().form_valid(form)
+        # Salva o objeto no banco de dados
+        self.object.save()
+        # Salva os campos ManyToMany
+        form.save_m2m()
+        # Redireciona para a URL de sucesso
+        return HttpResponseRedirect(self.get_success_url())
