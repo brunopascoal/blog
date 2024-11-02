@@ -22,6 +22,7 @@ CSRF_TRUSTED_ORIGINS = ['https://d813-177-47-86-147.ngrok-free.app']
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,9 +39,16 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',  # O provedor Google
     'allauth.socialaccount.providers.facebook',  # O provedor Google
     'markdownify',
+    'cloudinary',
 
 
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dwnrwdzl9',
+    'API_KEY': '484657112221627',
+    'API_SECRET': 'BDOypNfwgEFtatNckhiUgpW93dQ',
+}
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -154,8 +162,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "core/static",  # O caminho onde está a pasta 'static' do app core
 ]
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 # Este é o diretório onde os arquivos estáticos serão coletados em produção
 STATIC_ROOT = BASE_DIR / "staticfiles"
