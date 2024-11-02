@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load markdown_extras %}
 
 {% block title %}Menu{% endblock %}
 
@@ -6,6 +7,7 @@
     <h2 class="text-center">Últimas postagens</h2>
     <div class="row">
         {% for post in posts %}
+    
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     {% if post.image_url %}
@@ -15,7 +17,7 @@
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
-                        <p class="card-text">{{ post.content|slice:":100" }}...</p>
+                        <!-- <p class="card-text">{{ post.content|markdownify|slice:":20" }}...</p> -->
                         <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">Leia mais</a>
                     </div>
                 </div>

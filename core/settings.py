@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',  # O provedor Google
     'allauth.socialaccount.providers.facebook',  # O provedor Google
+    'markdownify',
+
 
 ]
 
@@ -152,7 +154,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "core/static",  # O caminho onde está a pasta 'static' do app core
 ]
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
