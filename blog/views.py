@@ -14,6 +14,7 @@ from .models import Post
 from .forms import PostForm
 from openai import OpenAI
 from django.http import HttpResponseRedirect
+import cloudinary.uploader
 
 
 def post_list(request):
@@ -71,7 +72,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         if 'image_url' not in self.request.FILES:
             # Nenhuma imagem foi carregada, gerar imagem usando a API
             prompt = f"{self.object.title} {self.object.content[:200]}"
-            
+
             try:
                 response = client.images.generate(prompt=prompt, n=1, size="512x512")
                 image_url = response.data[0].url
@@ -80,12 +81,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
                 image_response = requests.get(image_url)
 
                 if image_response.status_code == 200:
-                    # Salvar a imagem no diretório de mídia definido
-                    self.object.image_url.save(
-                        f'{self.object.slug}.png',
-                        ContentFile(image_response.content),
-                        save=False
-                    )
+                    # Fazer upload da imagem no Cloudinary
+                    upload_response = cloudinary.uploader.upload(image_response.content)
+                    self.object.image_url = upload_response['url']
                 else:
                     print("Erro ao baixar a imagem")
 
