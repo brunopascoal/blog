@@ -4,6 +4,7 @@ from decouple import config
 import django_on_heroku
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+import dj_database_url
 
 
 # Quick-start development settings - unsuitable for production
@@ -107,14 +108,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase',
-        'USER': 'myuser',
-        'PASSWORD': 'mypassword',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
+    'default': dj_database_url.config(default='postgres://u41jgko4jtkg8e:p592dc0f36ef2ecfd6abb4924bd62bb3e503789b775aedf609c394753cdd6bbb4@cbec45869p4jbu.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d93eb5dqgs4smb')
 }
 
 LOGOUT_REDIRECT_URL = 'login'  # Redireciona para a página de login após o logout
