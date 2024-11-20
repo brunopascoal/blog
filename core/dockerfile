@@ -1,0 +1,21 @@
+# Define a imagem base
+FROM python:3.13.0
+
+# Define o diretório de trabalho como /app
+WORKDIR /app
+
+# Copia o arquivo de dependências para /app
+COPY requirements.txt .
+
+# Instala as dependências
+RUN pip install -r requirements.txt
+
+# Copia todo o projeto para /app
+COPY . . 
+
+# Define a variável de ambiente para o Django apontando para core.settings
+ENV DJANGO_SETTINGS_MODULE=core.settings
+ENV PYTHONUNBUFFERED=1
+
+# Comando para iniciar o servidor do Django
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

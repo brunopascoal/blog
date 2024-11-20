@@ -137,11 +137,21 @@ body {
     /* Cor de texto dos links */
 }
 
-.card-text {
-    margin-top: 10px; /* Espaço acima */
-    margin-bottom: 10px; /* Espaço abaixo */
-    padding-left: 15px; /* Espaço interno à esquerda */
-    padding-right: 15px; /* Espaço interno à direita */
+.card-text p {
+    margin: 0; /* Remove margin */
+    padding: 0 1rem; /* Adiciona padding nas laterais */
+    text-align: justify; /* Opcional: justifica o texto */
+}
+
+.card-text ul, 
+.card-text ol {
+    padding-left: 2rem; /* Ajusta espaçamento para listas */
+}
+
+.card-text h1, 
+.card-text h2, 
+.card-text h3 {
+    padding: 0 1rem;
 }
 
 
